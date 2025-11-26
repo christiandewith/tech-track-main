@@ -1,16 +1,105 @@
-.player-card {
-  border: 1px solid #ddd;
+/* ============================================
+   GLOBAL STYLES
+   ============================================ */
+
+body { 
+  background-color: #033744;
+}
+
+p, h3 {
+  color: #000000;
+}
+
+h2 {
+  color: #e55838;
+}
+
+/* ============================================
+   HEADER
+   ============================================ */
+
+header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  height: 300px;
+  margin-top: 100px;
+}
+
+header p, 
+header a {
+  color: #e55838;
+}
+
+.header {
+  width: 60%;
+  margin-left: auto;
+  margin-right: auto;
+  color: #e55838;
+}
+
+/* ============================================
+   SVG / CHART
+   ============================================ */
+
+svg {
+  background-color: #f2e5dd;
+  border-radius: 8px;
+  border: 2px solid #e55838;
   padding: 1rem;
-  margin: 1rem 0;
+  display: flex;
+}
+
+.chart-container-top {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 20px;
+  justify-content: center;
+}
+
+.chart-container-top p {
+  color: #e55838;
+}
+
+/* ============================================
+   LAYOUT CONTAINERS
+   ============================================ */
+
+.container-bottom {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  padding: 20px;
+}
+
+/* ============================================
+   PLAYER CARDS
+   ============================================ */
+
+.player-card {
+  border: 1px solid #e55838;
+  max-width: 360px;
+  background-color: #dac6a9;
+  padding: 0.5rem;
+  margin: 0.5rem 0;
   border-radius: 8px;
   display: flex;
-  gap: 1rem;
-  align-items: flex-start;
+  gap: 0.75rem; 
+  align-items: center;
+}
+
+.player-card.compact {
+  padding: 0.4rem;
+  border-width: 1px;
 }
 
 .player-photo {
-  width: 80px;
-  height: 80px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   object-fit: cover;
   flex-shrink: 0;
@@ -24,13 +113,114 @@
   margin: 0 0 0.5rem 0;
 }
 
-.team-logo {
-  width: 40px;
-  height: 40px;
-  object-fit: contain;
-  margin-bottom: 0.5rem;
-}
-
 .player-info p {
   margin: 0.5rem 0;
 }
+
+.player-info.compact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: flex-start;
+}
+
+.player-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.player-name {
+  font-size: 14px;
+  margin: 0;
+  color: #000000;
+}
+
+.player-goals {
+  font-weight: 700;
+  color: #e55838;
+  font-size: 14px;
+}
+
+.scorers-container {
+  width: 500px;
+  overflow-y: auto;
+  max-height: 500px;
+  background-color: #f2e5dd;
+  border-radius: 8px;
+  border: 2px solid #e55838;
+  padding: 15px;
+}
+
+/* ============================================
+   TEAM LOGOS
+   ============================================ */
+
+.team-logo.small {
+  width: 20px;
+  height: 20px;
+  margin-bottom: 0;
+}
+
+.team-logo-small {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+/* ============================================
+   FIXTURES
+   ============================================ */
+
+.fixtures-container {
+  width: 800px;
+  border: 2px solid #e55838;
+  padding: 15px;
+  border-radius: 8px;
+  background: #f2e5dd;
+  overflow-y: auto;
+  max-height: 500px;
+}
+
+.fixtures-container h2 {
+  margin: 15px 0;
+}
+
+.fixtures-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.fixture-card {
+  background: #ddd;
+  padding: 8px 10px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  border-left: 3px solid #e55838;
+}
+
+.team {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 90px;
+}
+
+.team-name {
+  font-size: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fixture-score {
+  font-weight: 700;
+  font-size: 14px;
+  min-width: 48px;
+  text-align: center;
+}
+

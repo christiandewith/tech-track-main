@@ -1,38 +1,37 @@
 import { fetchTopScorers } from './dataFetch.js';
 
-/**
- * Cleans and filters player data
- * Extracts: lastname, team, goals, photo, nationality, assists, logo
- * @param {Array} playersData - Raw player data from API
- * @returns {Array} Cleaned player data
- */
-export function cleanPlayerData(playersData) {
-  return playersData.map(player => ({
-    lastname: player.player?.lastname || 'N/A',
-    team: player.statistics?.[0]?.team?.name || 'N/A',
-    goals: player.statistics?.[0]?.goals?.total || 0,
-    assists: player.statistics?.[0]?.goals?.assists || 0,
-    photo: player.player?.photo || '',
-    nationality: player.player?.nationality || 'N/A',
-    logo: player.statistics?.[0]?.team?.logo || ''
-  }));
+// Flatten raw player entries into simple objects for UI usage.
+export function cleanPlayerData(players) {
+  if (!Array.isArray(players)) return [];
+
+  // filter -> map: keep valid entries, then transform
+  return players
+    .filter((p) => (
+      p &&
+      p.player && p.player.lastname &&
+      p.statistics && p.statistics[0] &&
+      p.statistics[0].team && p.statistics[0].team.name
+    ))
+    .map((p) => ({
+      lastname: p.player.lastname,
+      team: p.statistics[0].team.name,
+      goals: (p.statistics[0].goals && p.statistics[0].goals.total),
+      assists: (p.statistics[0].goals && p.statistics[0].goals.assists),
+      photo: p.player.photo,
+      nationality: p.player.nationality,
+      logo: p.statistics[0].team.logo
+    }));
 }
 
-/**
- * Fetches and cleans top scorers data
- * @param {Object} params - Query parameters (league, season)
- * @returns {Promise<Array>} Cleaned player data
- */
-export async function getCleanedTopScorers(params = {}) {
+// Fetch raw top scorers and return cleaned player data.
+export async function getCleanedTopScorers({ league = 39, season = 2025 } = {}) {
   try {
-    const rawData = await fetchTopScorers(params);
-    const cleanedData = cleanPlayerData(rawData);
-    console.log('Cleaned player data:', cleanedData);
-    return cleanedData;
-  } catch (error) {
-    console.error('Error cleaning data:', error);
-    throw error;
+    const raw = await fetchTopScorers({ league, season });
+    const cleaned = cleanPlayerData(raw);
+    console.log('Cleaned players count:', cleaned.length);
+    return cleaned;
+  } catch (err) {
+    console.error('getCleanedTopScorers error:', err);
+    throw err;
   }
 }
-
-export default getCleanedTopScorers;
