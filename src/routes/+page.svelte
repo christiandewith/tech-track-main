@@ -4,6 +4,7 @@
   import Fixtures from '../components/Fixtures.svelte';
   import { getCleanedTopScorers } from '$lib/dataClean.js';
   import { onMount } from 'svelte';
+  import '$lib/style.css';
 
   // State: top scorers array plus loading/error flags for fetch lifecycle.
   let scorers = [];
