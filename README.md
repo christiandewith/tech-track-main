@@ -18,17 +18,17 @@ I also a fixturs table so you can see the most recent result of every team in le
 ## Installation Guide
 
  if you dont have node.js installed. run this in your terminal.
- -- node install
+** -- node install**
 
  Clone the repository with the following command.
- -- git clone https://github.com/christiandewith/tech-track-main.git
-
+** -- git clone https://github.com/christiandewith/tech-track-main.git
+**
  after run this to install all the dependencies
- -- npm install
-
+** -- npm install
+**
  then check if it works by running
- npm run dev
-
+** npm run dev
+**
  Open the localhost/xxxx in your terminal to view the project. 
 
  it should look something like this. 
