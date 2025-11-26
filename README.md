@@ -1,38 +1,35 @@
-# sv
+# The best Premier League attacker
+Welcome to my repository of the best premier league attacker  at this moment 2025/2026. This is the data visualisation I built for the Minor Information Design at the HVA. 
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+## What is this datavisualisation about?
+I'm someone who is very interested in football and I like watching the statistics of players. What especially fascinates me is statistical outliers. that why I made this datavisualisation where you can follow Erling Haaland all year to see how far a head he is of the rest of the premier league attackers. The data I used is goals and assists. These statisctics are shown in a bubblechart with the top 20 premier league attackers based on their amount of goals. 
 
-## Creating a project
+I made simple list with the players that are on the list and their amount of goals underneath the visualization so you can tell who is on there because sometimes players overlap and you can't tel who is who. 
 
-If you're seeing this, you've probably already done this step. Congrats!
+I also a fixturs table so you can see the most recent result of every team in league. 
 
-```bash
-# create a new project in the current directory
-npx sv create
 
-# create a new project in my-app
-npx sv create my-app
-```
+## I build this using
+- Git
+- node
+- Sveltekit
+- d3.js
 
-## Developing
+## Installation Guide
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+ if you dont have node.js installed. run this in your terminal.
+ -- node install
 
-```bash
-npm run dev
+ Clone the repository with the following command.
+ -- git clone https://github.com/christiandewith/tech-track-main.git
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
+ after run this to install all the dependencies
+ -- npm install
 
-## Building
+ then check if it works by running
+ npm run dev
 
-To create a production version of your app:
+ Open the localhost/xxxx in your terminal to view the project. 
 
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+ it should look something like this. 
+ <img width="1600" height="947" alt="image" src="https://github.com/user-attachments/assets/510f78de-f91e-4f3b-8e16-1c302c776a4a" />
