@@ -3,59 +3,114 @@
   import { onMount } from 'svelte';
   import { getCleanedTopScorers } from '$lib/dataClean.js';
 
+  onMount(async () => {
+    // Chart dimensions
+    const width = 1400;
+    const height = 400;
+    const margin = { top: 40, right: 40, bottom: 40, left: 40 };
 
+    // Fetch player data
+    const players = await getCleanedTopScorers();
+    if (!Array.isArray(players) || players.length === 0) return;
 
+    // Create scales
+    const xScale = d3.scaleLinear()
+      .domain(d3.extent(players, d => d.goals))
+      .range([margin.left, width - margin.right]);
 
+    const yScale = d3.scaleLinear()
+      .domain(d3.extent(players, d => d.assists))
+      .range([height - margin.bottom, margin.top]);
 
-onMount(async () => {
+    // Setup SVG
+    const svg = d3.select('svg')
+      .attr('width', width)
+      .attr('height', height);
 
-  const width = 600;
-  const height = 400;
-  const margin = { top: 40, right: 40, bottom: 40, left: 40 };
+    svg.selectAll('.axis').remove();
 
-  // Await the cleaned data (getCleanedTopScorers is async)
-  const data = await getCleanedTopScorers();
+    // Add X axis (goals)
+    svg.append('g')
+      .attr('class', 'axis axis--x')
+      .attr('transform', `translate(0,${height - margin.bottom})`)
+      .call(d3.axisBottom(xScale));
 
-  // Guard: ensure we have an array
-  const safeData = Array.isArray(data) ? data : [];
+    // Add Y axis (assists) with integer ticks only
+    const [yMin, yMax] = yScale.domain();
+    const yTicks = d3.range(Math.floor(yMin), Math.ceil(yMax) + 1);
 
-  // Compute extents with sensible fallbacks if data is empty
-  const goalsExtent = d3.extent(safeData, d => d.goals);
-  const assistsExtent = d3.extent(safeData, d => d.assists);
-  const xDomain = (goalsExtent && goalsExtent[0] != null) ? goalsExtent : [0, 1];
-  const yDomain = (assistsExtent && assistsExtent[0] != null) ? assistsExtent : [0, 1];
+    svg.append('g')
+      .attr('class', 'axis axis--y')
+      .attr('transform', `translate(${margin.left},0)`)
+      .call(d3.axisLeft(yScale).tickValues(yTicks).tickFormat(d3.format('d')));
+    
+    // Axis labels
+    // X label: Goals (centered under the axis)
+    svg.append('text')
+      .attr('class', 'axis-label axis-label--x')
+      .attr('x', (width) / 2)
+      .attr('y', height - 2)
+      .attr('text-anchor', 'middle')
+      .attr('font-size', '18px')
+      .text('Goals');
 
-  // Scales
-  const xScale = d3.scaleLinear()
-    .domain(xDomain)
-    .nice()
-    .range([margin.left, width - margin.right]);
+    // Y label: Assists (rotated, centered along the axis)
+    svg.append('text')
+      .attr('class', 'axis-label axis-label--y')
+      .attr('transform', `rotate(-90)`)
+      .attr('x', -(height / 2))
+      .attr('y', 16)
+      .attr('text-anchor', 'middle')
+      .attr('font-size', '18px')
+      .text('Assists');
+    
+    // Add club logos
+    const logoSize = 30;
+    const logoSizeHover = 40;
 
-  const yScale = d3.scaleLinear()
-    .domain(yDomain)
-    .nice()
-    .range([height - margin.bottom, margin.top]);
+    svg.selectAll('.player-logo')
+      .data(players)
+      .join('image')
+      .attr('class', 'player-logo')
+      .attr('x', d => xScale(d.goals) - logoSize/2)
+      .attr('y', d => yScale(d.assists) - logoSize/2)
+      .attr('width', logoSize)
+      .attr('height', logoSize)
+      .attr('href', d => d.logo)
+      .on('mouseover', function (event, d) {
+        d3.select(this)
+          .transition()
+          .duration(200)
+          .attr('width', logoSizeHover)
+          .attr('height', logoSizeHover)
+          .attr('x', d => xScale(d.goals) - logoSizeHover/2)
+          .attr('y', d => yScale(d.assists) - logoSizeHover/2)
+          .attr('opacity', 1);
+      })
+      .on('mouseout', function (event, d) {
+        d3.select(this)
+          .transition()
+          .duration(200)
+          .attr('width', logoSize)
+          .attr('height', logoSize)
+          .attr('x', d => xScale(d.goals) - logoSize/2)
+          .attr('y', d => yScale(d.assists) - logoSize/2)
+          .attr('opacity', 0.8);
+      });
 
-  // Select SVG
-  const svg = d3.select('svg')
-    .attr('width', width)
-    .attr('height', height);
-
-  // Clear any previous axes / content
-  svg.selectAll('.axis').remove();
-
-  // X Axis
-  svg.append('g')
-    .attr('class', 'axis axis--x')
-    .attr('transform', `translate(0,${height - margin.bottom})`)
-    .call(d3.axisBottom(xScale));
-
-  // Y Axis
-  svg.append('g')
-    .attr('class', 'axis axis--y')
-    .attr('transform', `translate(${margin.left},0)`)
-    .call(d3.axisLeft(yScale));
-
-});
+    // Add player name labels below logos
+    svg.selectAll('.player-label')
+      .data(players)
+      .join('text')
+      .attr('class', 'player-label')
+      .attr('x', d => xScale(d.goals))
+      .attr('y', d => yScale(d.assists) + 25)
+      .attr('text-anchor', 'middle')
+      .attr('font-size', '12px')
+      .attr('fill', '#e55838')
+      .attr('pointer-events', 'none')
+      .text(d => d.lastname);
+  });
 </script>
 
+<svg></svg>
